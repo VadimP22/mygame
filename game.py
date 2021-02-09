@@ -1,3 +1,5 @@
+from menu import Menu
+
 class Game():
     
     def __init__(self, scrn):
@@ -11,4 +13,6 @@ class Game():
             self.scr.refresh()
 
     def mainloop(self):
-        self.scr.addch(1, 1, self.key)
+        menu = Menu(3, 0, 'absolutely', 'b', 'cee')
+        menu.draw(self.scr)
+        menu.process(self.key)
