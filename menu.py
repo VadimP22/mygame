@@ -23,7 +23,7 @@ class MenuLabel():
 
 
 class Menu():
-    def __init__(self, y, x, *names):
+    def __init__(self, y, x, names):
         self.selector = 0
         self.active = True
         self.labels = []
@@ -46,11 +46,29 @@ class Menu():
     def draw(self, scr):
         #self.labels[2].select()
         for label in self.labels:
-            if label.selected:
+            if (label.selected):
                 scr.addch(label.y, label.x - 1, '[')
                 scr.addch(label.y, label.x + len(label.name), ']')
+            else:
+                scr.addch(label.y, label.x - 1, ' ')
+                scr.addch(label.y, label.x + len(label.name), ' ')
             scr.addstr(label.y, label.x, str(label.name))
 
-    def process(self, scr):
-       self.labels[2].select()
+    def process(self, key):
+        if key == "w":
+            self.selector = self.selector - 1
+        elif key == "s":
+            self.selector = self.selector + 1
+        elif key == "d":
+            self.labels[self.selector].onclick()
+
+        if self.selector >= len(self.labels):
+            self.selector = 0
+        elif self.selector < 0:
+            self.selector = len(self.labels) - 1
+        
+        for label in self.labels:
+            label.deselect()
+        self.labels[self.selector].select()
+
 
