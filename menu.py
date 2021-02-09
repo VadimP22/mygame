@@ -23,6 +23,7 @@ class MenuLabel():
 
 
 class Menu():
+
     def __init__(self, y, x, names):
         self.selector = 0
         self.active = True
@@ -55,20 +56,27 @@ class Menu():
             scr.addstr(label.y, label.x, str(label.name))
 
     def process(self, key):
-        if key == "w":
-            self.selector = self.selector - 1
-        elif key == "s":
-            self.selector = self.selector + 1
-        elif key == "d":
-            self.labels[self.selector].onclick()
+        if self.active:
+            if key == "w":
+                self.selector = self.selector - 1
+            elif key == "s":
+                self.selector = self.selector + 1
+            elif key == "d":
+                self.labels[self.selector].onclick()
 
-        if self.selector >= len(self.labels):
-            self.selector = 0
-        elif self.selector < 0:
-            self.selector = len(self.labels) - 1
-        
+            if self.selector >= len(self.labels):
+                self.selector = 0
+            elif self.selector < 0:
+                self.selector = len(self.labels) - 1
+            
+            for label in self.labels:
+                label.deselect()
+            self.labels[self.selector].select()
+
+
+    def set_onclick(self, label_name, func):
         for label in self.labels:
-            label.deselect()
-        self.labels[self.selector].select()
+            if label.name == label_name:
+                label.set_onclick(func)
 
 
